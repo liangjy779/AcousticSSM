@@ -1,0 +1,16 @@
+name: sweep_ft
+method: random
+metric:
+  goal: maximize
+  name: Average Test Accuracy
+parameters:
+  learning_rate:
+    values: [5e-3, 6e-3, 7e-3, 8e-3]
+  batch_size:
+    values: [4]
+  epochs:
+    values: [80]
+  weight_decay:
+    values: [0.0, 1e-4, 1e-3]
+  dropout:
+    values: [0.01, 0.05, 0.1]

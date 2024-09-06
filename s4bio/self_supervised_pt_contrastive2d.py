@@ -197,7 +197,7 @@ class SpeechCommands(SequenceDataset, _SpeechCommands):
         return (self.SEGMENT_SIZE,)  # noqa
 
 
-parser = argparse.ArgumentParser(description='PyTorch CIFAR10 Training')
+parser = argparse.ArgumentParser(description='PyTorch Contrastive Learning')
 # Optimizer
 parser.add_argument('--lr', default=1e-4, type=float, help='Learning rate')
 parser.add_argument('--weight_decay', default=1e-3, type=float, help='Weight decay')
@@ -206,7 +206,7 @@ parser.add_argument('--weight_decay', default=1e-3, type=float, help='Weight dec
 parser.add_argument('--epochs', default=200, type=int, help='Training epochs')
 parser.add_argument('--train_steps', default=250, type=int, help='Training steps')
 # Dataset
-parser.add_argument('--dataset', default='bio', choices=['mnist', 'cifar10','speechcommand','esc50','testesc50','bio'], type=str, help='Dataset')
+parser.add_argument('--dataset', default='esc50', choices=['mnist', 'cifar10','speechcommand','esc50','testesc50','bio'], type=str, help='Dataset')
 parser.add_argument('--grayscale', action='store_true', help='Use grayscale CIFAR10')
 # Dataloader        
 parser.add_argument('--num_workers', default=4, type=int, help='Number of workers to use for dataloader')
@@ -339,66 +339,16 @@ elif args.dataset == 'esc50':
     train_labels=[]
     for i in range(1,6):
         sounds = dataset['fold{}'.format(i)].item()['sounds']
-        labels = dataset['fold{}'.format(i)].item()['labels']
+        
         train_sounds.extend(sounds)
-        train_labels.extend(labels)
-    data = [(train_sounds[i],train_labels[i]) for i in range(0,len(train_sounds))]
-    # sounds = []
-    # labels = [];#thes two store sounds & labels after preprocess
-    # da = []
-    # #ncrops=5
-    # ncrops=1
-    # STD = 0
-    # for  i in range(0,len(train_sounds)):
-    #     sound,target = data[i]
-    #     #temorary comment
-    #     func = preprocess_setup()
-    #     for f in func:
-    #         sound = f(sound)
-    #     label = np.zeros((ncrops,50))
-    #     label[:,target] = 1
         
-    #     #sound.reshape((len(sound),1))
-    #     #transform = transforms.ToTensor()
-    #     #sound = transform(sound)
-    #     #mix with randomised data
-    #     STD += np.std(sound)
-    #     sound = torch.from_numpy(sound)
-    #     sound = sound.float()
-        
-    #     s = sound.unsqueeze(-1)
-        
-    #     # sounds.extend(s)
-    #     # labels.extend(label)
-    #     for j in range(ncrops):
-    #         da.append((s[j],target))
-    #     #da.append((s,target))
-    # STD /= len(train_sounds)
-   #需要解决------------------ trainset,_ = split_train_val(speechdata,val_split=0.1)
-    #trainset,testset = split_train_val(da,val_split=0.1)
-    #trainset,valset = split_train_val(da,val_split=0.1)
-    #_,valset = split_train_val(da,val_split=0.1)
-    #_,valset = split_train_val(da,val_split=0.2)
+    #sdata = [(train_sounds[i],train_labels[i]) for i in range(0,len(train_sounds))]
     d_input = 1
     d_output = 50
 def collate_fn(batch):
     sounds = torch.stack([item[0]for item in batch])
     targets = torch.stack([item[1] for item in batch])
     return sounds,targets
-        
-        
-#elif args.dataset == 'speechcommands':
-#    transform = 
-#else: raise NotImplementedError
-
-# Dataloaders
-#trainloader = torch.utils.data.DataLoader(
- #   trainset, batch_size=args.batch_size, shuffle=True, num_workers=args.num_workers,collate_fn=collate_fn)
-#valloader = torch.utils.data.DataLoader(
- #   valset, batch_size=args.batch_size, shuffle=False, num_workers=args.num_workers,collate_fn=collate_fn)
-# testloader = torch.utils.data.DataLoader(
-#     testset, batch_size=args.batch_size, shuffle=False, num_workers=args.num_workers)
-
 
 
 # Model
